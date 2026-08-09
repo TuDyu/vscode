@@ -109,48 +109,62 @@ git checkout icdev-dev
 
 ---
 
-## 工作流 0: 阶段分支-任务分支-阶段确认-阶段合并 (阶段性开发主流程)
+## 工作流 0: 两层工作流 (阶段级 + 功能点级) — 阶段性开发主流程
 
-> 项目按阶段 (P0/P1/P2/...) 推进。**按大阶段合并**：阶段内小任务各自建分支并提交独立 git 节点，
-> 但只在阶段全部完成后整体合并回 icdev-dev。禁止直接在 icdev-dev 上开发功能代码。
+> 项目按阶段 (P0/P1/P2/...) 推进，**按大阶段合并**到 icdev-dev 主线。
+> 阶段内功能点由阶段 agent 自主并行开发与合并，用户只在阶段级确认。
+
+### 大框架任务流 (阶段级)
 
 ```bash
-# 阶段开始: 从 icdev-dev 创建阶段分支
-#   例: git checkout icdev-dev && git checkout -b feat/p1
+# 阶段开始: 从 icdev-dev 主线创建阶段分支，用于整个大阶段
+git checkout icdev-dev
+git checkout -b feat/p1
 
-# 每个小任务: 从阶段分支创建任务分支 (命名: feat/p<阶段>-<任务描述>)
-git checkout feat/p1
-git checkout -b feat/p1-vendor-id-decouple     # 示例
+# ... 阶段内功能点开发 (见下) ...
 
-# 开发 + 自测 (编译 + 测试)
-git add <files>
-git commit -m "IC-dev: <任务描述>"              # 每个小任务独立 commit = git 节点
-
-# 自测通过后: 合并回阶段分支 (无需用户确认)
-git checkout feat/p1
-git merge feat/p1-vendor-id-decouple
-git branch -d feat/p1-vendor-id-decouple
-
-# 阶段全部任务完成后: 推送阶段分支并交给用户确认
+# 阶段完成后: 通过对话与用户确认 (可含补充修改要求)，直到用户同意
 git push origin feat/p1
-# (等待用户确认)
-
-# 确认通过后: 阶段分支整体合并回 icdev-dev
+# 用户确认后: 阶段分支整体合并回 icdev-dev
 git checkout icdev-dev
 git merge feat/p1
 git push origin icdev-dev
-
-# 清理
 git branch -d feat/p1
-git push origin --delete feat/p1              # 如已推送
+git push origin --delete feat/p1
+```
+
+### 阶段性任务流 (功能点级: 分支-开发-确认-合并)
+
+```bash
+# 1. 分支: 阶段 agent 为功能点创建子分支 (命名: feat/p<阶段>-<功能>)
+git checkout feat/p1
+git checkout -b feat/p1-goose-extension        # 示例
+
+# 鼓励并行: 用 git worktree 为每个功能点建独立工作区
+git worktree add ../icdev-p1-goose -b feat/p1-goose-extension feat/p1
+# 可委派 sub-agent 在不同 worktree 中并行开发
+
+# 2. 开发: 实现功能 + 自测 (编译 + 测试)，独立 commit 即 git 节点
+git add <files>
+git commit -m "IC-dev: <功能点描述>"
+
+# 3. 确认: 功能点分支合并由阶段 agent 自主决定，无需用户确认
+git checkout feat/p1
+git merge feat/p1-goose-extension
+git branch -d feat/p1-goose-extension
+git worktree remove ../icdev-p1-goose          # 清理 worktree
+
+# 4. 交付: 阶段内完成重大更新或全部任务时，交付可体验更新给用户
+#    用户体验后给出合并与否意见；阶段分支仅在此后才可进入阶段确认
 ```
 
 ### 规则
 - 框架文件 (.goosehints, icdev/, .agents/, recipes/) 的修改可直接提交在 icdev-dev
-- 代码定制 (src/, extensions/, product.json, build/) 走阶段分支 + 任务分支
-- 任务分支 → 阶段分支的合并**不需要**用户确认；阶段分支 → icdev-dev 的合并**必须**用户确认
-- 每个小任务至少一个独立 commit (git 节点)，便于回溯与撤销
-- 阶段分支可推送 origin 供备份/审查，但不推送合并到 icdev-dev
+- 代码定制 (src/, extensions/, product.json, build/) 走阶段分支 + 功能点分支
+- 功能点分支 → 阶段分支的合并由**阶段 agent 自主确认**；阶段分支 → icdev-dev 的合并**必须**用户确认
+- sub-agent 的开发结果仅需阶段 agent 确认，由阶段 agent 决定功能点分支合并
+- 每个功能点至少一个独立 commit (git 节点)，便于回溯与撤销
+- 阶段内完成重大更新或全部任务时，必须交付**实际可体验**的更新 (最终目标: 在 IC-dev 内自举迭代)
 - 合并后如修改了上游文件，重新生成 patches/
 - 每次变更后更新 icdev/state.md
 

@@ -31,7 +31,7 @@ description: IC-dev 项目架构师，负责规划设计、复杂度评估和上
 - AI 策略：移除 Copilot、接入 goose
 - 目标平台：Windows + Linux
 - main 分支 = 干净上游，icdev-dev = 定制分支
-- 阶段性开发**按大阶段合并**，采用"阶段分支-任务分支-阶段确认-阶段合并"工作流：阶段从 icdev-dev 创建 feat/p<阶段> 分支，阶段内小任务各自建分支开发并提交 git 节点，阶段全部完成后整体交给用户确认，确认通过后才合并回 icdev-dev（详见 skills/icdev-git 工作流 0）
+- 阶段性开发**按大阶段合并**，采用两层工作流：阶段级从 icdev-dev 创建 feat/p<阶段> 分支，功能点级由阶段 agent 建子分支并行开发（鼓励 worktree + sub-agent）并自主确认合并；阶段完成后交付可体验更新，用户实际体验并同意后才合并回 icdev-dev（详见 skills/icdev-git 工作流 0）
 
 ## 原则
 
