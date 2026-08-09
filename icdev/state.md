@@ -2,14 +2,14 @@
 
 > 最后更新: 2026-08-09
 > 当前阶段: Phase 1 — P0 品牌化
-> 活跃分支: icdev-dev (待创建)
+> 活跃分支: icdev-dev
 > 上游 HEAD: 97f9937a426
 
 ## 当前进度
 
-### P0: 品牌化 (未开始)
-- [ ] 配置 Git 双远程 (origin → TuDyu/icdev, upstream → microsoft/vscode)
-- [ ] 创建 icdev-dev 分支
+### P0: 品牌化 (进行中)
+- [x] 配置 Git 双远程 (origin → TuDyu/vscode, upstream → microsoft/vscode)
+- [x] 创建 icdev-dev 分支 + 框架文件提交推送
 - [ ] product.json 品牌化 (nameShort/nameLong/applicationName 等 25+ 字段)
 - [ ] package.json name 修改
 - [ ] defaultChatAgent 初步改造 (替换为 goose 扩展 ID)
