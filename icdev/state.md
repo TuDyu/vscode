@@ -3,7 +3,7 @@
 > 最后更新: 2026-08-09 12:00
 > 当前阶段: Phase 1 — P0 品牌化
 > 活跃分支: icdev-dev
-> 上游 HEAD: 97f9937a426 | IC-dev HEAD: 0f1a055777f
+> 上游 HEAD: 97f9937a426 | IC-dev HEAD: d9b8b204b28
 
 ## 当前进度
 
