@@ -12,8 +12,8 @@
 - [x] 创建 icdev-dev 分支 + 框架文件提交推送
 - [x] product.json 品牌化 (nameShort/nameLong/applicationName 等 25+ 字段)
 - [x] package.json name 修改 (跳过 — name 仅用于 npm, 不影响产品名)
-- [ ] defaultChatAgent 初步改造 (替换为 goose 扩展 ID)
-- [ ] 图标资源替换 (win32/ico, linux/png)
+- [x] defaultChatAgent 初步改造 (替换为 goose 扩展 ID)
+- [~] 图标资源替换 (跳过, 后续处理) (win32/ico, linux/png)
 - [x] 验证编译: `gulp compile-client` → 8094 JS 文件, 0 errors
 
 ### P1: AI 集成 (未开始)
