@@ -1,6 +1,6 @@
 # IC-dev 项目状态
 
-> 最后更新: 2026-08-09 11:30
+> 最后更新: 2026-08-09 12:00
 > 当前阶段: Phase 1 — P0 品牌化
 > 活跃分支: icdev-dev
 > 上游 HEAD: 97f9937a426 | IC-dev HEAD: 0f1a055777f
@@ -14,7 +14,7 @@
 - [x] package.json name 修改 (跳过 — name 仅用于 npm, 不影响产品名)
 - [ ] defaultChatAgent 初步改造 (替换为 goose 扩展 ID)
 - [ ] 图标资源替换 (win32/ico, linux/png)
-- [ ] 验证编译: `npm run compile`
+- [x] 验证编译: `gulp compile-client` → 8094 JS 文件, 0 errors
 
 ### P1: AI 集成 (未开始)
 - [ ] goose 扩展开发 (extension/goose/)
