@@ -1,0 +1,38 @@
+version: "1.0.0"
+title: "IC-dev 上游同步检查"
+description: "检查 VS Code 上游变更对 IC-dev 定制的影响，生成影响报告"
+
+instructions: |
+  你正在为 IC-dev 项目执行上游同步检查。
+
+  核心流程:
+  1. 读取 @icdev/state.md 了解当前定制状态和阶段
+  2. 读取 @icdev/docs/upstream-sync.md 了解关键监控文件列表和评估标准
+  3. 确认 git 远程: git remote -v (应有 upstream → microsoft/vscode)
+  4. 拉取最新: git fetch upstream main
+  5. 查看差异: git log main..upstream/main --oneline
+  6. 对于每个关键监控文件，检查变更: git diff main upstream/main -- <file>
+  7. 如果有文件受影响，评估影响等级（无/低/中/高）
+  8. 生成报告到 icdev/reports/sync-YYYY-MM-DD.md
+
+  关键监控文件列表:
+  - product.json
+  - src/vs/workbench/contrib/chat/common/languageModels.ts
+  - src/vs/base/common/product.ts
+  - src/vs/platform/product/common/product.ts
+  - src/vs/workbench/contrib/chat/common/chatSelectedModel.ts
+  - src/vs/workbench/api/browser/mainThreadLanguageModels.ts
+  - src/vs/workbench/api/common/extHostLanguageModels.ts
+  - src/vs/code/electron-main/app.ts
+  - build/gulpfile.vscode.ts
+
+  如果无影响，输出简洁的无影响报告。
+  如果有影响，列出受影响文件和具体变更内容，给出行动建议。
+
+extensions:
+  - type: builtin
+    name: developer
+    bundled: true
+    timeout: 300
+  - type: platform
+    name: summon

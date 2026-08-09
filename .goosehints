@@ -1,0 +1,28 @@
+# IC-dev: 基于 VS Code 源码的定制 IDE
+
+当前阶段: Phase 1 — P0 品牌化 (product.json + 图标 + 构建配置)
+产品名称: IC-dev
+目标平台: Windows, Linux
+AI 策略: 开源化替换 Copilot → goose (Phase 2 接入)
+
+## 关键决策 (最近3个)
+- defaultChatAgent 替换为 goose，保留 COPILOT_VENDOR_ID 常量但修改行为
+- 认证方式: Phase 1 用 API Key，后续扩展 OAuth
+- 代码组织: patch-based，patches/ 目录存放所有对上游文件的定制补丁
+
+## 当前任务
+@icdev/tasks/current.md
+
+## 项目文档
+- 状态追踪: @icdev/state.md
+- 完整分析报告: @icdev/docs/analysis-report.md
+- 实施路线图: @icdev/docs/roadmap.md
+- 定制点索引: @icdev/docs/customization-index.md
+- 上游同步策略: @icdev/docs/upstream-sync.md
+
+## 分支与 Git 约定
+- main: 干净跟踪 upstream (microsoft/vscode)，不做任何修改
+- icdev-dev: 所有定制 + 框架文件
+- patches/ 目录存放对上游文件的修改补丁
+- 框架文件 (.goosehints, icdev/, .agents/, recipes/) 直接提交在 icdev-dev
+- 每次修改后更新 icdev/state.md
