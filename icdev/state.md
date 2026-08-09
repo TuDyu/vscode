@@ -1,13 +1,13 @@
 # IC-dev 项目状态
 
-> 最后更新: 2026-08-09 14:49
-> 当前阶段: Phase 1 — P0 品牌化
-> 活跃分支: icdev-dev
+> 最后更新: 2026-08-09 16:10
+> 当前阶段: Phase 1 — P1 AI 集成
+> 活跃分支: icdev-dev (feat/p1-vendor-id)
 > 上游 HEAD: 97f9937a426 | IC-dev HEAD: d9b8b204b28
 
 ## 当前进度
 
-### P0: 品牌化 (进行中)
+### P0: 品牌化 (已完成 ✅)
 - [x] 配置 Git 双远程 (origin → TuDyu/vscode, upstream → microsoft/vscode)
 - [x] 创建 icdev-dev 分支 + 框架文件提交推送
 - [x] product.json 品牌化 (nameShort/nameLong/applicationName 等 25+ 字段)
@@ -16,7 +16,7 @@
 - [~] 图标资源替换 (跳过, 后续处理) (win32/ico, linux/png)
 - [x] 验证编译: `gulp compile-client` → 8094 JS 文件, 0 errors
 
-### P1: AI 集成 (未开始)
+### P1: AI 集成 (进行中)
 - [ ] goose 扩展开发 (extension/goose/)
 - [ ] COPILOT_VENDOR_ID 解耦 (7 个文件)
 - [ ] 移除 Copilot 扩展依赖
@@ -37,6 +37,7 @@
 | 2026-08-09 | 深度方案 B | 中度定制 + 开源 AI 替换 |
 | 2026-08-09 | patch-based 组织 | 便于跟踪上游变更 |
 | 2026-08-09 | .goosehints + AGENTS.md 并存 | 职责分离：VS Code 指南 vs IC-dev 上下文 |
+| 2026-08-09 | 阶段性开发采用"分支-确认-合并"工作流 | 任务从 icdev-dev 建分支 → 完成自测 → 用户确认 → 合并，禁止直接在主开发分支上做功能开发 |
 
 ## 当前阻塞
 - 无

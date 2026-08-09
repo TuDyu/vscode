@@ -109,6 +109,46 @@ git checkout icdev-dev
 
 ---
 
+## 工作流 0: 分支-确认-合并 (阶段性开发主流程)
+
+> 项目阶段性开发统一采用"分支-确认-合并"形式，禁止直接在 icdev-dev 上开发功能代码。
+
+```bash
+# 1. 分支: 从 icdev-dev 创建任务分支 (命名: feat/<阶段>-<任务描述>)
+git checkout icdev-dev
+git pull origin icdev-dev
+git checkout -b feat/p1-vendor-id-decouple     # 示例
+
+# 2. 开发: 在分支上完成任务
+#    - 修改 src/, extensions/, product.json, build/ 等
+#    - 自测: 编译 + 功能验证
+
+# 3. 提交 (在分支上)
+git add <files>
+git commit -m "IC-dev: <描述>"
+
+# 4. 确认: 将分支工作交给用户确认，等待明确批准
+#    - 可以推送分支供 review: git push origin feat/xxx
+#    - 未经用户确认不得合并
+
+# 5. 合并: 用户确认后合并回 icdev-dev
+git checkout icdev-dev
+git merge feat/xxx
+git push origin icdev-dev
+
+# 6. 清理: 删除已合并的分支
+git branch -d feat/xxx
+git push origin --delete feat/xxx   # 如已推送
+```
+
+### 规则
+- 框架文件 (.goosehints, icdev/, .agents/, recipes/) 的修改可直接提交在 icdev-dev
+- 代码定制 (src/, extensions/, product.json, build/) 必须走分支-确认-合并
+- 合并后如修改了上游文件，重新生成 patches/
+- 每次变更后更新 icdev/state.md
+
+---
+
 ## 工作流 4: 初始设置 (仅一次)
 
 ```bash
