@@ -1,4 +1,4 @@
-# VS Code Copilot Instructions
+# VS Code Agents Instructions
 
 ## Project Overview
 
