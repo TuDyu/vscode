@@ -55,10 +55,12 @@ npm run compile  # 需要 Copilot 依赖也安装
 
 | 问题 | 影响 | 原因 |
 |------|------|------|
-| sqlite3 存储报错 | 无持久存储 | native 模块未编译 |
-| 部分 native 功能缺失 | 无 registry/kerberos/watchdog | native 模块 stub |
+| 首次 npm install 需 --ignore-scripts | native 模块不编译 | 无 MSVC C++ 编译环境 |
+| Spectre 缓解库 | 编译失败 | 需修补 binding.gyp 或安装 Spectre 组件 |
 | npm run compile 失败 | 仅 compile-client 可用 | Copilot 扩展 esbuild 依赖 |
 
 ## 后续改善
-- [ ] 安装 VS C++ BuildTools workload 以编译 native 模块
+- [x] 安装 VS C++ BuildTools workload 以编译 native 模块 ✅
+- [ ] 安装 Spectre 缓解库 (或使用 binding.gyp patch 绕过)
+- [ ] 安装 Rust 工具链 (编译 goose CLI)
 - [ ] 或从 VS Code OSS 发布版提取预编译 .node 文件
