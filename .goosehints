@@ -18,7 +18,9 @@ AI 策略: 开源化替换 Copilot → goose (Phase 2 接入)
 - 完整分析报告: @icdev/docs/analysis-report.md
 - 实施路线图: @icdev/docs/roadmap.md
 - 定制点索引: @icdev/docs/customization-index.md
+- Agent 架构: @icdev/docs/agent-architecture.md
 - 上游同步策略: @icdev/docs/upstream-sync.md
+- 开发环境搭建: @icdev/docs/dev-setup.md
 
 ## 分支与 Git 约定
 - main: 干净跟踪 upstream (microsoft/vscode)，不做任何修改
