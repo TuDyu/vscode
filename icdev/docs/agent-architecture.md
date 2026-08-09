@@ -148,6 +148,52 @@ npm run gulp vscode-win32-x64 -- --agents goose,ic-goose
 npm run gulp vscode-win32-x64
 ```
 
+## 持久指令 (Persistent Instructions)
+
+goose CLI 通过 `GOOSE_MOIM_MESSAGE_FILE` 环境变量实现**每轮注入的不可遗忘规则**。
+IC-dev 内置 goose 不使用环境变量，改为文件自动发现：
+
+### 需求来源
+- `.goosehints` 仅在会话启动时加载一次，长对话中可能被上下文挤出
+- 部分规则（如"永远不叫错产品名"）需要在每轮对话中持续生效
+- 环境变量方式不适合 GUI 编辑器场景
+
+### IC-dev 实现方案
+
+| goose CLI | IC-dev goose 扩展 |
+|-----------|------------------|
+| `GOOSE_MOIM_MESSAGE_FILE` 环境变量 | 固定路径文件自动发现 |
+| 需要用户手动配置 | 扩展自动加载 |
+| 每轮注入 system prompt | 扩展在每次请求前注入 |
+
+**文件位置**: `.goose/always.md`（项目根目录，由 goose 扩展自动发现）
+
+**goose.json manifest 中的配置**:
+```jsonc
+{
+  "persistentInstructions": ".goose/always.md",  // 可选，默认为此路径
+}
+```
+
+**扩展行为**:
+1. icdev-agent 扩展激活时查找 `.goose/always.md`
+2. 如果存在，将内容缓存
+3. 每次向 agent CLI 发送请求时，将持久指令注入到 system prompt 中
+4. 文件变化时自动重新加载（watch 机制）
+
+### `.goose/always.md` 示例
+```markdown
+你是 IC-dev 项目的开发助手。
+- 产品名永远用 "IC-dev"，禁止使用 "Code - OSS" 或 "Visual Studio Code"
+- 修改代码后更新 icdev/state.md
+- 品牌修改通过 product.json + patches/ 管理
+```
+
+### 实现阶段
+- [ ] Phase 2a: 在 `extensions/icdev-agent/` 中实现 `.goose/always.md` 读取
+- [ ] Phase 2a: 每次 LLM 请求前注入内容
+- [ ] Phase 2a: 实现文件 watch 热更新
+
 ## Agent 通信协议
 
 ```
