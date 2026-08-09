@@ -109,41 +109,48 @@ git checkout icdev-dev
 
 ---
 
-## 工作流 0: 分支-确认-合并 (阶段性开发主流程)
+## 工作流 0: 阶段分支-任务分支-阶段确认-阶段合并 (阶段性开发主流程)
 
-> 项目阶段性开发统一采用"分支-确认-合并"形式，禁止直接在 icdev-dev 上开发功能代码。
+> 项目按阶段 (P0/P1/P2/...) 推进。**按大阶段合并**：阶段内小任务各自建分支并提交独立 git 节点，
+> 但只在阶段全部完成后整体合并回 icdev-dev。禁止直接在 icdev-dev 上开发功能代码。
 
 ```bash
-# 1. 分支: 从 icdev-dev 创建任务分支 (命名: feat/<阶段>-<任务描述>)
-git checkout icdev-dev
-git pull origin icdev-dev
+# 阶段开始: 从 icdev-dev 创建阶段分支
+#   例: git checkout icdev-dev && git checkout -b feat/p1
+
+# 每个小任务: 从阶段分支创建任务分支 (命名: feat/p<阶段>-<任务描述>)
+git checkout feat/p1
 git checkout -b feat/p1-vendor-id-decouple     # 示例
 
-# 2. 开发: 在分支上完成任务
-#    - 修改 src/, extensions/, product.json, build/ 等
-#    - 自测: 编译 + 功能验证
-
-# 3. 提交 (在分支上)
+# 开发 + 自测 (编译 + 测试)
 git add <files>
-git commit -m "IC-dev: <描述>"
+git commit -m "IC-dev: <任务描述>"              # 每个小任务独立 commit = git 节点
 
-# 4. 确认: 将分支工作交给用户确认，等待明确批准
-#    - 可以推送分支供 review: git push origin feat/xxx
-#    - 未经用户确认不得合并
+# 自测通过后: 合并回阶段分支 (无需用户确认)
+git checkout feat/p1
+git merge feat/p1-vendor-id-decouple
+git branch -d feat/p1-vendor-id-decouple
 
-# 5. 合并: 用户确认后合并回 icdev-dev
+# 阶段全部任务完成后: 推送阶段分支并交给用户确认
+git push origin feat/p1
+# (等待用户确认)
+
+# 确认通过后: 阶段分支整体合并回 icdev-dev
 git checkout icdev-dev
-git merge feat/xxx
+git merge feat/p1
 git push origin icdev-dev
 
-# 6. 清理: 删除已合并的分支
-git branch -d feat/xxx
-git push origin --delete feat/xxx   # 如已推送
+# 清理
+git branch -d feat/p1
+git push origin --delete feat/p1              # 如已推送
 ```
 
 ### 规则
 - 框架文件 (.goosehints, icdev/, .agents/, recipes/) 的修改可直接提交在 icdev-dev
-- 代码定制 (src/, extensions/, product.json, build/) 必须走分支-确认-合并
+- 代码定制 (src/, extensions/, product.json, build/) 走阶段分支 + 任务分支
+- 任务分支 → 阶段分支的合并**不需要**用户确认；阶段分支 → icdev-dev 的合并**必须**用户确认
+- 每个小任务至少一个独立 commit (git 节点)，便于回溯与撤销
+- 阶段分支可推送 origin 供备份/审查，但不推送合并到 icdev-dev
 - 合并后如修改了上游文件，重新生成 patches/
 - 每次变更后更新 icdev/state.md
 
